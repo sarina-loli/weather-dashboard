@@ -1,0 +1,20 @@
+.dashboard {
+  flex: 1;
+  width: 100%;
+  padding: 2rem 1.2rem 3rem;
+  background: var(--color-bg);
+}
+
+.dashboard-hint {
+  max-width: 560px;
+  margin: 3rem auto 0;
+  text-align: center;
+  color: var(--color-text-60);
+  font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 1.4rem 0.8rem 2rem;
+  }
+}
