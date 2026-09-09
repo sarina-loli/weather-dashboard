@@ -23,12 +23,17 @@ load_dotenv(BASE_DIR / '.env')
 # ------------------------------------------------------------------
 # Never hardcode the secret key or API keys. Always read them from
 # environment variables (which come from the .env file above).
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-default-change-me')
+SECRET_KEY = os.getenv('SECRET_KEY')
+import dj_database_url
+DEBUG = os.getenv('DEBUG')
 
-DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+       
+   
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['127.0.0.1']  
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',]
 # The OpenWeatherMap API key used by weather/services.py.
 # We read it here (in settings) so all apps have one single source of
 # truth for configuration, then services.py imports it from settings.
@@ -55,9 +60,11 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     # CorsMiddleware must be placed as high as possible, and before
     # CommonMiddleware, so that CORS headers are added to every response.
     'corsheaders.middleware.CorsMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -90,16 +97,8 @@ WSGI_APPLICATION = 'weather_dashboard.wsgi.application'
 # DATABASE (SQLite for development)
 # ------------------------------------------------------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'weather',
-        'USER': 'root',
-        'PASSWORD': 'loli123,sara',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-    }
-}
-# ------------------------------------------------------------------
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'))} 
 # PASSWORD VALIDATION
 # ------------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
@@ -138,8 +137,16 @@ REST_FRAMEWORK = {
 
 # ------------------------------------------------------------------
 # CORS (allow the React dev server to call this API)
-# ------------------------------------------------------------------
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-]
+
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",},
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",},}
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media' 
