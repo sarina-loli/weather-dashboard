@@ -30,11 +30,12 @@ DEBUG = os.getenv('DEBUG')
        
    
 
-ALLOWED_HOSTS = ['127.0.0.1', 'weather-dashboard-eibw.onrender.com']  
+ALLOWED_HOSTS = ['127.0.0.1', 'weather-dashboard-1-rbbn.onrender.com']
+
+
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'https://weather-dashboard-eibw.onrender.com']
+    'https://weather-dashboard-1-rbbn.onrender.com','http://localhost:5173'
+]
 # The OpenWeatherMap API key used by weather/services.py.
 # We read it here (in settings) so all apps have one single source of
 # truth for configuration, then services.py imports it from settings.
